@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nameutils"
+version = "1.0.0"
+description = "Identify family/given names and capitalize correctly"
+readme = "README.md"
+requires-python = ">=3.0"
+license = { file = "LICENSE" }
+authors = [{ name = "raf", email = "raf@raf.org" }]
+maintainers = [{ name = "raf", email = "raf@raf.org" }]
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"Development Status :: 5 - Production/Stable",
+	"License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+	"Operating System :: OS Independent",
+	"Topic :: Text Processing :: Linguistic"
+]
+dependencies = ["regex"]
+
+[project.urls]
+"Documentation" = "https://raf.org/nameutils/manual/nameutils.3py.html"
+"Repository" = "https://github.com/rafmod/nameutils"
+"Bug Tracker" = "https://github.com/rafmod/nameutils/issues"
+
