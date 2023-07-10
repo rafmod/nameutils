@@ -72,7 +72,7 @@ And can be installed using *pip*:
 # Requirements
 
 *nameutils* is a *python* module that should work on systems with any
-version of *python3*. It doesn't depend on any non-standard modules.
+version of *python3*. It depends on the non-standard *regex* module.
 
 --------------------------------------------------------------------------------
 
