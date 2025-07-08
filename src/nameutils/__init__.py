@@ -287,7 +287,7 @@ These examples show the default *namecase()* output for various forms of
 names. They also show which name forms are automatically recognized by
 *namesplit()*. Note that non-ASCII letters and punctuation in these
 examples have been replaced with the closest ASCII equivalents to avoid
-problems with some implementations of *\*roff*. *namesplit()* also supports
+problems with some implementations of *\\*roff*. *namesplit()* also supports
 names in Chinese characters, Korean Hangul and Hanja, and Japanese Kanji and
 Kana, but they are not shown here for the same reason::
 

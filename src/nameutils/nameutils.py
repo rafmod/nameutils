@@ -29,7 +29,7 @@ none = None
 # Define apostrophe-like characters and hyphen-like characters
 
 apostrophe = "['’ʼʻ]" # Apostrophe, Right single quotation mark, Modifier letter apostrophe, Modifier letter turned comma
-hyphen = "\p{dash punctuation}" # Hyphen-Minus, Hyphen, En Dash, Em Dash, et al.
+hyphen = r'\p{dash punctuation}' # Hyphen-Minus, Hyphen, En Dash, Em Dash, et al.
 
 def kc(text):
 	# Like casefold() but "folds" apostrophe-like and hyphen-like characters as well
@@ -1012,16 +1012,16 @@ def namecase(name, mode='full', given_names=none):
 
 	# Uppercase at start of word (after space, apostrophe, or hyphen)
 	name = lc(nametrim(name))
-	name = s('\\b(\w)', lambda m: uc(p(m, 1)), name)
+	name = s(r'\b(\w)', lambda m: uc(p(m, 1)), name)
 
 	# Lowercase after apostrophes that follow more than 1 letter (e.g. Oso'ese but not O'Brien)
-	name = s('(?<=\w{2}|' + apostrophe + '\w)(' + apostrophe + '\w)', lambda m: lc(p(m, 1)), name)
+	name = s(r'(?<=\w{2}|' + apostrophe + r'\w)(' + apostrophe + r'\w)', lambda m: lc(p(m, 1)), name)
 	# Lowercase after apostrophes that follow one letter that isn't O, V or D
 	# (e.g. T'ang, but not O'Brien or d'Iapico  or v'Rachel)
-	name = s('(?<=\\b[^ODV])(' + apostrophe + '\w)', lambda m: lc(p(m, 1)), name)
+	name = s('(?<=\\b[^ODV])(' + apostrophe + r'\w)', lambda m: lc(p(m, 1)), name)
 
 	# Uppercase after "Mc" and "Fitz" ("Mac" is done selectively with built-in exceptions)
-	name = s('\\b(Mc|Fitz)(\w)', lambda m: p(m, 1) + uc(p(m, 2)), name)
+	name = s(r'\b(Mc|Fitz)(\w)', lambda m: p(m, 1) + uc(p(m, 2)), name)
 
 	# Lowercase some grammatical/aristocratic/patronymic prefixes.
 	# Note: This should only be done for family names because
@@ -1046,16 +1046,16 @@ def namecase(name, mode='full', given_names=none):
 		# Irish: Prefix case normal except: Ó hUiginn, Ó hAodha
 		# Note1: "ben" is only detected when unambiguous
 
-		name = s('\\b(d' + apostrophe + '|(?:de(?: la|' + apostrophe + ')?|del|dela|dels|della|delle|dal|dalla|degli|di|du|da|do|dos|das|y|i|e|von und zu|von|zu|van het|van|der|ter|den|tot|af|av|til|ap|ab|ferch|verch|ibn|bin|bint|binti|binte|bat|mibeit|mimishpachat|ka|of)\s)', lambda m: lc(p(m, 1)), name, 'i')
-		name = s('\\b(dall|dell)(' + apostrophe + ')(\w)', lambda m: lc(p(m, 1)) + p(m, 2) + uc(p(m, 3)), name, 'i') # Italian: dall'Agnese
-		name = s('((?:^|\s)' + apostrophe + ')([st])(\w)', lambda m: p(m, 1) + lc(p(m, 2)) + uc(p(m, 3)), name, 'i') # Dutch: 'sGravesande
+		name = s('\\b(d' + apostrophe + '|(?:de(?: la|' + apostrophe + r')?|del|dela|dels|della|delle|dal|dalla|degli|di|du|da|do|dos|das|y|i|e|von und zu|von|zu|van het|van|der|ter|den|tot|af|av|til|ap|ab|ferch|verch|ibn|bin|bint|binti|binte|bat|mibeit|mimishpachat|ka|of)\s)', lambda m: lc(p(m, 1)), name, 'i')
+		name = s('\\b(dall|dell)(' + apostrophe + r')(\w)', lambda m: lc(p(m, 1)) + p(m, 2) + uc(p(m, 3)), name, 'i') # Italian: dall'Agnese
+		name = s(r'((?:^|\s)' + apostrophe + r')([st])(\w)', lambda m: p(m, 1) + lc(p(m, 2)) + uc(p(m, 3)), name, 'i') # Dutch: 'sGravesande
 		name = s('\\b(' + irish_o_re + ' )(h)(' + irish_vowel_re + ')', lambda m: p(m, 1) + lc(p(m, 2)) + uc(p(m, 3)), name, 'i') # Irish: Ó hUiginn
 		name = s('\\b(el|al|ut|ha)(?=' + hyphen + ')', lambda m: lc(p(m, 1)), name, 'i') # Arabic/Hebrew: el- al- ut- ha-
 		name = s('\\b(v)(?=' + apostrophe + ')', lambda m: lc(p(m, 1)), name, 'i') # Hebrew: v'Rachel
 		if mode == 'family' or name.find(',') != -1:
-			name = s('^(ben\s)', lambda m: lc(p(m, 1)), name, 'i') # Hebrew: ben if family
+			name = s(r'^(ben\s)', lambda m: lc(p(m, 1)), name, 'i') # Hebrew: ben if family
 		if m(' v' + apostrophe + '| ha' + hyphen + '(?:Kohein|Levi|Rav)\\b', name) is not none:
-			name = s('(?<=\s)\\b(ben)\\b(?=\s)', lambda m: lc(p(m, 1)), name, 'i', count=1) # Hebrew: ben if v' or ha-
+			name = s(r'(?<=\s)\b(ben)\b(?=\s)', lambda m: lc(p(m, 1)), name, 'i', count=1) # Hebrew: ben if v' or ha-
 
 		if mode == 'full' and namecase_exceptions_full is not none:
 			kcfull = kc(name)
@@ -1190,7 +1190,7 @@ def namesplit(name):
 	global family_names_ck
 	global family_names_ck_re
 	if family_names_ck is none:
-		family_names_ck = { _: 1 for(_) in family_names_chinese + [ _ for _ in family_names_korean if m('\p{Hangul}', _) is not none ] }
+		family_names_ck = { _: 1 for(_) in family_names_chinese + [ _ for _ in family_names_korean if m(r'\p{Hangul}', _) is not none ] }
 		family_names_ck_re = '(?:' + '|'.join(family_names_ck.keys()) + ')'
 
 	global family_names_ck_roman
@@ -1220,7 +1220,7 @@ def namesplit(name):
 	# Identify plausible multi-word family names (in Latin scripts)
 
 	words = split(' ', name)
-	if len(words) < 2 and m('^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', name) is none:
+	if len(words) < 2 and m(r'^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', name) is none:
 		return namecase(name)
 
 	for i in range(1, len(words)):
@@ -1268,7 +1268,7 @@ def namesplit(name):
 
 	# Identify Japanese names
 
-	if m('^[\p{Han}\p{Hiragana}\p{Katakana}]+$', name) is not none:
+	if m(r'^[\p{Han}\p{Hiragana}\p{Katakana}]+$', name) is not none:
 		return ', '.join(namesplit_ja(name))
 
 	# Assume a single-word family name
@@ -1307,7 +1307,7 @@ def namesplit_ja(name):
 	for i in range(1, length - 1):
 
 		# Improve on the default probability if possible
-		if m('^[\p{Hiragana}\p{Katakana}]$', name[i]) is not none:
+		if m(r'^[\p{Hiragana}\p{Katakana}]$', name[i]) is not none:
 			prob[i] = 0 # Assume that kana is not part of the surname (not correct in practice)
 		elif name[i] in family_name_japanese_probabilities:
 			prob[i] = length_weight * prob[i] + (1 - length_weight) * family_name_japanese_probabilities[name[i]]
@@ -1340,7 +1340,7 @@ def namesplit_exception(name):
 	global namesplit_exceptions
 	if namesplit_exceptions is none:
 		namesplit_exceptions = {}
-	if m('^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', f + g) is not none:
+	if m(r'^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', f + g) is not none:
 		natural = f + g
 		namesplit_exceptions[name] = name
 		namesplit_exceptions[natural] = name
@@ -1371,7 +1371,7 @@ def namejoin(f, g):
 	if f is none:
 		return g
 
-	if m('^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', f + g) is not none:
+	if m(r'^[\p{Han}\p{Hangul}\p{Hiragana}\p{Katakana}]+$', f + g) is not none:
 		return f + g
 
 	return ' '.join([g, f])
@@ -1383,9 +1383,9 @@ def nametrim(name):
 	if name is none:
 		return none
 
-	name = s('^\s+', '', name)                               # Remove leading spaces
-	name = s('\s+$', '', name)                               # Remove trailing spaces
-	name = s('\s+', ' ', name)                               # Squash multiple spaces
+	name = s(r'^\s+', '', name)                               # Remove leading spaces
+	name = s(r'\s+$', '', name)                               # Remove trailing spaces
+	name = s(r'\s+', ' ', name)                               # Squash multiple spaces
 	name = s('(' + hyphen + ') ', lambda m: p(m, 1), name)   # Remove space after hyphen
 	name = s(' (,|' + hyphen + ')', lambda m: p(m, 1), name) # Remove space before comma and hyphen
 	name = s(',(?! )', ', ', name)                           # Add space after - if missing
