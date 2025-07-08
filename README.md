@@ -79,6 +79,6 @@ version of *python3*. It depends on the non-standard *regex* module.
     URL: https://raf.org/nameutils
     GIT: https://github.com/rafmod/nameutils
     GIT: https://codeberg.org/rafmod/nameutils
-    Date: 20230709
+    Date: 20250708
     Author: raf <raf@raf.org>
 

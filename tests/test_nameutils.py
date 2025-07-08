@@ -5,7 +5,7 @@
 # https://github.com/rafmod/nameutils
 # https://codeberg.org/rafmod/nameutils
 #
-# Copyright (C) 2023 raf <raf@raf.org>
+# Copyright (C) 2023-2025 raf <raf@raf.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 #
-# 20230709 raf <raf@raf.org>
+# 20250708 raf <raf@raf.org>
 
 import sys
 sys.path.insert(0, 'src')

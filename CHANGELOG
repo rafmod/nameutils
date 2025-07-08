@@ -2,3 +2,8 @@
 
     - Initial Python3 version
 
+1.0.1 (20250708)
+
+    - doc - Fix statement of requirements (regex module)
+    - Avoid python-3.12+ syntax warnings relating to regex backslash notation
+
